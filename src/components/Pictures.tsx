@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
-export function Pictures() {
+import React, { useState, useEffect } from 'react';
+export const Pictures: React.FC = () => {
   const [artworks, setArtworks] = useState<fetchedData[]>([]);
+  const [enterredSearch, setEnterredSearch] = useState<string>('');
 
   type fetchedData = {
-    id: String;
-    image_id: String;
-    title: String;
-    artist_title: String;
-    is_public_domain: Boolean;
+    id: string;
+    image_id: string;
+    title: string;
+    artist_title: string;
+    is_public_domain: boolean;
   };
 
   function getArtWorks(): Promise<{ data: fetchedData[] }> {
@@ -19,19 +20,34 @@ export function Pictures() {
   useEffect(() => {
     getArtWorks().then((data) => setArtworks(data.data));
   }, []);
+
+  const filterredArtworks =
+    artworks &&
+    artworks.filter((item) => {
+      return (
+        item.title.toLowerCase().trim().includes(enterredSearch) ||
+        item.artist_title.toLowerCase().trim().includes(enterredSearch)
+      );
+    });
   return (
-    <ul>
-      {artworks.map((artwork) => {
-        return (
-          <li>
-            <div>
-              <p>{artwork.title}</p>
-              <p>{artwork.artist_title}</p>
-              <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
-            </div>
-          </li>
-        );
-      })}
-    </ul>
+    <>
+      <input
+        value={enterredSearch}
+        onChange={(e) => setEnterredSearch(e.target.value)}
+      />
+      <ul>
+        {filterredArtworks.map((artwork) => {
+          return (
+            <li key={artwork.id}>
+              <div>
+                <p>{artwork.title}</p>
+                <p>{artwork.artist_title}</p>
+                <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+    </>
   );
-}
+};
