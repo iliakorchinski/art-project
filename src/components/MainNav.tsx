@@ -5,7 +5,7 @@ export function MainNav() {
     <header>
       <div>
         <p>
-          <Link to="">Home</Link>
+          <Link to="/">Home</Link>
         </p>
         <p>
           <Link to="favourites">Your Favourites</Link>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { ArtworkList } from '../components/ArtworkList';
 
 export function HomePage() {
