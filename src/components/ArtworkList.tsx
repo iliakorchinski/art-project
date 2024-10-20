@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { SearchInput } from './SearchInput';
+import { useDebouncedValue } from '../util/hooks/useDebounce';
 
 type FetchedData = {
   id: string;
@@ -12,6 +13,7 @@ type FetchedData = {
 export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<FetchedData[]>([]);
   const [enterredSearch, setEnterredSearch] = useState<string>('');
+  const debounceSearchItem = useDebouncedValue(enterredSearch, 2000);
 
   function getArtWorks(): Promise<{ data: FetchedData[] }> {
     const responce = fetch(
@@ -21,29 +23,20 @@ export const ArtworkList = () => {
   }
   function searchArtwork(): Promise<{ data: FetchedData[] }> {
     const responce = fetch(
-      `https://api.artic.edu/api/v1/artworks/search?q=${enterredSearch}?fields=id,title,artist_display,date_display,main_reference_number,image_id,artist_title,is_public_domain&limit=3&page=1`
+      `https://api.artic.edu/api/v1/artworks/search?q=${debounceSearchItem}?fields=id,title,artist_display,date_display,main_reference_number,image_id,artist_title,is_public_domain&limit=3&page=1`
     ).then((res) => res.json());
     return responce;
   }
+
   useEffect(() => {
-    if (!enterredSearch) {
+    if (debounceSearchItem) {
+      // searchArtwork().then((data) => setArtworks(data.data));
+      searchArtwork().then((data) => setArtworks(data.data));
+    } else {
       getArtWorks().then((data) => setArtworks(data.data));
     }
-  }, [enterredSearch]);
-  useEffect(() => {
-    if (enterredSearch) {
-      searchArtwork().then((data) => setArtworks(data.data));
-    }
-  }, [enterredSearch]);
+  }, [debounceSearchItem]);
 
-  // const filterredArtworks =
-  //   artworks &&
-  //   artworks.filter((item) => {
-  //     return (
-  //       item.title.toLowerCase().trim().includes(enterredSearch) ||
-  //       item.artist_title.toLowerCase().trim().includes(enterredSearch)
-  //     );
-  //   });
   return (
     <>
       <SearchInput value={enterredSearch} onChange={setEnterredSearch} />
@@ -56,6 +49,9 @@ export const ArtworkList = () => {
                 <p>{artwork.artist_title}</p>
                 <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
               </div>
+              <p>
+                <button type="button">Add to Favourites</button>
+              </p>
             </li>
           );
         })}
