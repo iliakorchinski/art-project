@@ -1,10 +1,10 @@
-import { Pictures } from '../components/Pictures';
+import { ArtworkList } from '../components/ArtworkList';
 
 export function HomePage() {
   return (
     <>
       <h1>Welcome to art museum</h1>
-      <Pictures />
+      <ArtworkList />
     </>
   );
 }

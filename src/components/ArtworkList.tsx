@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-export const Pictures: React.FC = () => {
+import { SearchInput } from './SearchInput';
+
+export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<fetchedData[]>([]);
   const [enterredSearch, setEnterredSearch] = useState<string>('');
 
@@ -31,10 +33,7 @@ export const Pictures: React.FC = () => {
     });
   return (
     <>
-      <input
-        value={enterredSearch}
-        onChange={(e) => setEnterredSearch(e.target.value)}
-      />
+      <SearchInput value={enterredSearch} onChange={setEnterredSearch} />
       <ul>
         {filterredArtworks.map((artwork) => {
           return (
