@@ -1,16 +1,16 @@
-import React, { createContext, ReactNode, useState } from 'react';
+import { createContext, ReactNode, useEffect, useState } from 'react';
 import { FetchedData } from '../components/ArtworkList';
 
 type ArtworkContextObj = {
   artworks: FetchedData[];
   addArtwork: (id: string, artworks: FetchedData[]) => void;
-  //   removeArtwork: (id: string) => void;
+  removeArtwork: (id: string, artworks: FetchedData[]) => void;
 };
 
 export const ArtworkContext = createContext<ArtworkContextObj>({
   artworks: [],
   addArtwork: (id: string, artworks: FetchedData[]) => {},
-  //   removeArtwork: (id: string) => {},
+  removeArtwork: (id: string, artworks: FetchedData[]) => {},
 });
 
 type ArtworkContextProps = {
@@ -18,23 +18,38 @@ type ArtworkContextProps = {
 };
 
 export const ArtworkContextProvider = ({ children }: ArtworkContextProps) => {
-  const [artworks, setArtworks] = useState<FetchedData[]>([]);
+  const artworksLS = localStorage.getItem('artworks');
+  const [artworks, setArtworks] = useState<FetchedData[]>(
+    artworksLS ? JSON.parse(artworksLS) : []
+  );
 
-  //   let arr: any = [];
-  const handleSaveArtwork = (id: string, arts: FetchedData[]) => {
-    const selectedArtwork: any = arts.find((artwork) => artwork.id === id);
-    console.log(selectedArtwork);
-    // arr.push(selectedArtwork);
-    setArtworks((prevState) => {
-      return [...prevState, selectedArtwork];
-    });
+  useEffect(() => {
     localStorage.setItem('artworks', JSON.stringify(artworks));
-    // arr = [];
+  }, [artworks]);
+
+  const handleSaveArtwork = (id: string, arts: FetchedData[]) => {
+    const selectedArtwork: any = arts.find((artwork) => artwork.id === id); // any type
+    console.log(selectedArtwork);
+    setArtworks((prevState) => {
+      const newState = [...prevState, selectedArtwork];
+      return newState;
+    });
+  };
+
+  const handleRemoveArtwork = (id: string, arts: FetchedData[]) => {
+    const selectedArtwork: any = arts.find((artwork) => artwork.id === id);
+    setArtworks((prevState) => {
+      const newState = prevState.filter(
+        (item) => item.id !== selectedArtwork.id
+      );
+      return newState;
+    });
   };
 
   const contextValue: ArtworkContextObj = {
     artworks: artworks,
     addArtwork: handleSaveArtwork,
+    removeArtwork: handleRemoveArtwork,
   };
 
   return (

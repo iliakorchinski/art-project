@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { FetchedData } from '../components/ArtworkList';
 
 export function ArtworkDetail() {
-  const [artwork, setArtwork] = useState<any>();
+  const [artwork, setArtwork] = useState<any>(); // any
   const params = useParams();
   function getArtWorks(): Promise<{ data: FetchedData }> {
     const responce = fetch(
@@ -14,7 +14,7 @@ export function ArtworkDetail() {
   useEffect(() => {
     getArtWorks().then((data) => setArtwork(data.data));
   }, []);
-  console.log(artwork);
+  // console.log(artwork);
   return (
     <>
       <h1>ArtworkDetailPage</h1>

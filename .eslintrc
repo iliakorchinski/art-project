@@ -2,18 +2,22 @@
   "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],
   "rules": {
+    "no-console": "off",
     "import/prefer-default-export": "off",
     "import/extensions": 0,
     "react/function-component-definition": "off",
     "no-unused-vars": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
-    "react/destructuring-assignment": ["enabled", "never"],
+    "react/destructuring-assignment": 0,
     "react/jsx-filename-extension": [
       2,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
     ],
     "arrow-body-style": 0
+  },
+  "globals": {
+    "localStorage": true
   },
   "settings": {
     "import/resolver": {

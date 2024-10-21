@@ -53,12 +53,16 @@ export const ArtworkList = () => {
                   <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
                 </div>
                 <p>
-                  <button
-                    type="button"
-                    onClick={() => artworkCtx.addArtwork(artwork.id, artworks)}
-                  >
-                    Add to Favourites
-                  </button>
+                  <Link to="favourites">
+                    <button
+                      type="button"
+                      onClick={() =>
+                        artworkCtx.addArtwork(artwork.id, artworks)
+                      }
+                    >
+                      Add to Favourites
+                    </button>
+                  </Link>
                 </p>
               </Link>
             </li>
