@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useEffect, useState } from 'react';
+import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
 import { FetchedData } from '../components/ArtworkList';
 
 type ArtworkContextObj = {
@@ -28,29 +28,40 @@ export const ArtworkContextProvider = ({ children }: ArtworkContextProps) => {
   }, [artworks]);
 
   const handleSaveArtwork = (id: string, arts: FetchedData[]) => {
-    const selectedArtwork: any = arts.find((artwork) => artwork.id === id); // any type
+    const selectedArtwork: FetchedData | undefined = arts.find(
+      (artwork) => artwork.id === id
+    ); // any type
     console.log(selectedArtwork);
-    setArtworks((prevState) => {
-      const newState = [...prevState, selectedArtwork];
-      return newState;
-    });
+    if (selectedArtwork) {
+      setArtworks((prevState) => {
+        const newState = [...prevState, selectedArtwork];
+        return newState;
+      });
+    }
   };
 
   const handleRemoveArtwork = (id: string, arts: FetchedData[]) => {
-    const selectedArtwork: any = arts.find((artwork) => artwork.id === id);
-    setArtworks((prevState) => {
-      const newState = prevState.filter(
-        (item) => item.id !== selectedArtwork.id
-      );
-      return newState;
-    });
+    const selectedArtwork: FetchedData | undefined = arts.find(
+      (artwork) => artwork.id === id
+    );
+    if (selectedArtwork) {
+      setArtworks((prevState) => {
+        const newState = prevState.filter(
+          (item) => item.id !== selectedArtwork.id
+        );
+        return newState;
+      });
+    }
   };
 
-  const contextValue: ArtworkContextObj = {
-    artworks: artworks,
-    addArtwork: handleSaveArtwork,
-    removeArtwork: handleRemoveArtwork,
-  };
+  const contextValue: ArtworkContextObj = useMemo(
+    () => ({
+      artworks,
+      addArtwork: handleSaveArtwork,
+      removeArtwork: handleRemoveArtwork,
+    }),
+    [artworks, handleSaveArtwork, handleRemoveArtwork]
+  );
 
   return (
     <ArtworkContext.Provider value={contextValue}>
