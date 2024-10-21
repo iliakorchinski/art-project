@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { SearchInput } from './SearchInput';
 import { useDebouncedValue } from '../util/hooks/useDebounce';
+import { ArtworkContext } from '../store/artwork-context';
 
-type FetchedData = {
+export type FetchedData = {
   id: string;
   image_id: string;
   title: string;
@@ -14,6 +16,7 @@ export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<FetchedData[]>([]);
   const [enterredSearch, setEnterredSearch] = useState<string>('');
   const debounceSearchItem = useDebouncedValue(enterredSearch, 2000);
+  const artworkCtx = useContext(ArtworkContext);
 
   function getArtWorks(): Promise<{ data: FetchedData[] }> {
     const responce = fetch(
@@ -30,7 +33,6 @@ export const ArtworkList = () => {
 
   useEffect(() => {
     if (debounceSearchItem) {
-      // searchArtwork().then((data) => setArtworks(data.data));
       searchArtwork().then((data) => setArtworks(data.data));
     } else {
       getArtWorks().then((data) => setArtworks(data.data));
@@ -44,14 +46,21 @@ export const ArtworkList = () => {
         {artworks.map((artwork) => {
           return (
             <li key={artwork.id}>
-              <div>
-                <p>{artwork.title}</p>
-                <p>{artwork.artist_title}</p>
-                <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
-              </div>
-              <p>
-                <button type="button">Add to Favourites</button>
-              </p>
+              <Link to={`/${artwork.id}`}>
+                <div>
+                  <p>{artwork.title}</p>
+                  <p>{artwork.artist_title}</p>
+                  <p>{artwork.is_public_domain ? 'public' : 'private'}</p>
+                </div>
+                <p>
+                  <button
+                    type="button"
+                    onClick={() => artworkCtx.addArtwork(artwork.id, artworks)}
+                  >
+                    Add to Favourites
+                  </button>
+                </p>
+              </Link>
             </li>
           );
         })}

@@ -8,6 +8,7 @@
     "no-unused-vars": "off",
     "react/react-in-jsx-scope": "off",
     "react/jsx-uses-react": "off",
+    "react/destructuring-assignment": ["enabled", "never"],
     "react/jsx-filename-extension": [
       2,
       { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
