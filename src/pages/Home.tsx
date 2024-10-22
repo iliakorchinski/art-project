@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArtworkList } from '../components/ArtworkList';
+import { ArtworkList } from '../components/Artworks/ArtworkList';
 
 export function HomePage() {
   return (

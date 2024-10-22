@@ -1,5 +1,9 @@
-// import { useEffect, useState } from 'react';
-// import { Link } from 'react-router-dom';
+import {
+  PaginationContainer,
+  ButtonContainer,
+  ArrowButton,
+  Button,
+} from './PaginationStyle';
 
 type PaginationProps = {
   totalPages: number;
@@ -17,27 +21,27 @@ export function Pagination({
   handlePageClick,
 }: PaginationProps) {
   return (
-    <div>
-      <button type="button" onClick={handlePrevPage}>
+    <PaginationContainer>
+      <ArrowButton type="button" onClick={handlePrevPage}>
         {'<'}
-      </button>
-      <div>
+      </ArrowButton>
+      <ButtonContainer>
         {[...Array(totalPages)].map((_, i) => {
           return (
-            <button
+            <Button
               key={_}
               type="button"
               onClick={() => handlePageClick(i + 1)}
               disabled={i + 1 === currentPage}
             >
               {i + 1}
-            </button>
+            </Button>
           );
         })}
-      </div>
-      <button type="button" onClick={handleNextPage}>
+      </ButtonContainer>
+      <ArrowButton type="button" onClick={handleNextPage}>
         {'>'}
-      </button>
-    </div>
+      </ArrowButton>
+    </PaginationContainer>
   );
 }

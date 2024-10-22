@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router';
-import { MainNav } from '../components/MainNav';
+import { MainNav } from './Header/MainNav';
 
 export function Navigation() {
   return (

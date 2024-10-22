@@ -4,6 +4,7 @@
   "rules": {
     "no-console": "off",
     "import/prefer-default-export": "off",
+    "import/no-extraneous-dependencies": "off",
     "import/extensions": 0,
     "react/function-component-definition": "off",
     "no-unused-vars": "off",
@@ -17,7 +18,8 @@
     "arrow-body-style": 0
   },
   "globals": {
-    "localStorage": true
+    "localStorage": true,
+    "document": true
   },
   "settings": {
     "import/resolver": {

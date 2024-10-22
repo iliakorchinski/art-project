@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
-import { FetchedData } from '../components/ArtworkList';
+import { FetchedData } from '../components/Artworks/ArtworkList';
 
 type ArtworkContextObj = {
   artworks: FetchedData[];
