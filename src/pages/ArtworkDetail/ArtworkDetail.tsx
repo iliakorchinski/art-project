@@ -1,16 +1,17 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
 import { FetchedData } from '../../components/Artworks/ArtworkList';
+import { Loader } from '../../components/Loader/Loader';
 import {
   Container,
   ImageContainer,
   Image,
   InfoContainer,
-  Span,
 } from './ArtworkDetailStyle';
 
 export function ArtworkDetail() {
-  const [artwork, setArtwork] = useState<any>(); // any
+  const [artwork, setArtwork] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
   function getArtWorks(): Promise<{ data: FetchedData }> {
     const responce = fetch(
@@ -19,12 +20,16 @@ export function ArtworkDetail() {
     return responce;
   }
   useEffect(() => {
-    getArtWorks().then((data) => setArtwork(data.data));
+    setIsLoading(true);
+    getArtWorks().then((data) => {
+      setArtwork(data.data);
+      setIsLoading(false);
+    });
   }, []);
-  console.log(artwork);
   return (
     <>
       <h1>ArtworkDetailPage</h1>
+      {isLoading && <Loader />}
       {artwork && (
         <Container>
           <ImageContainer>

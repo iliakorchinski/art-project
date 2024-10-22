@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { SearchInput } from '../Search/SearchInput';
+import { Loader } from '../Loader/Loader';
 import { useDebouncedValue } from '../../util/hooks/useDebounce';
 import { ArtworkContext } from '../../store/artwork-context';
 import { Pagination } from '../Pagination/Pagination';
@@ -29,10 +30,11 @@ export type FetchedData = {
 export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<FetchedData[]>([]);
   const [enterredSearch, setEnterredSearch] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
   const debounceSearchItem = useDebouncedValue(enterredSearch, 500);
   const artworkCtx = useContext(ArtworkContext);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 8;
+  const totalPages = 5;
   const pagesToShow = 4;
   const pageSize = 3;
 
@@ -53,10 +55,17 @@ export const ArtworkList = () => {
   }
 
   useEffect(() => {
+    setIsLoading(true);
     if (debounceSearchItem) {
-      searchArtwork().then((data) => setArtworks(data.data));
+      searchArtwork().then((data) => {
+        setArtworks(data.data);
+        setIsLoading(false);
+      });
     } else {
-      getArtWorks(currentPage, pageSize).then((data) => setArtworks(data.data));
+      getArtWorks(currentPage, pageSize).then((data) => {
+        setArtworks(data.data);
+        setIsLoading(false);
+      });
     }
   }, [debounceSearchItem, currentPage]);
 
@@ -77,51 +86,54 @@ export const ArtworkList = () => {
   return (
     <>
       <SearchInput value={enterredSearch} onChange={setEnterredSearch} />
-      <List>
-        {artworks.map((artwork) => {
-          return (
-            <ListItem key={artwork.id}>
-              <Anchor to={`/${artwork.id}`}>
-                <Image
-                  src={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
-                  alt={artwork.title}
-                />
-                <InformationContainer>
-                  <InformationParagraph1>{`${artwork.title
-                    .slice(0, 9)
-                    .trim()}...`}</InformationParagraph1>
-                  <InformationParagraph2>
-                    {artwork.artist_title}
-                  </InformationParagraph2>
-                  <InformationParagraph3>
-                    {artwork.is_public_domain ? 'public' : 'private'}
-                  </InformationParagraph3>
-                  <ButtonContainer>
-                    <Button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        artworkCtx.addArtwork(artwork.id, artworks);
-                      }}
-                      disabled={artworkCtx.artworks.some(
-                        (item) => item.id === artwork.id
-                      )}
-                    >
-                      {artworkCtx.artworks.some(
-                        (item) => item.id === artwork.id
-                      ) ? (
-                        <Image src={RemoveIcon} alt="remove artwork" />
-                      ) : (
-                        <Image src={SelectIcon} alt="select artwork" />
-                      )}
-                    </Button>
-                  </ButtonContainer>
-                </InformationContainer>
-              </Anchor>
-            </ListItem>
-          );
-        })}
-      </List>
+      {isLoading && <Loader />}
+      {!isLoading && (
+        <List>
+          {artworks.map((artwork) => {
+            return (
+              <ListItem key={artwork.id}>
+                <Anchor to={`/${artwork.id}`}>
+                  <Image
+                    src={`https://www.artic.edu/iiif/2/${artwork.image_id}/full/843,/0/default.jpg`}
+                    alt={artwork.title}
+                  />
+                  <InformationContainer>
+                    <InformationParagraph1>{`${artwork.title
+                      .slice(0, 9)
+                      .trim()}...`}</InformationParagraph1>
+                    <InformationParagraph2>
+                      {artwork.artist_title}
+                    </InformationParagraph2>
+                    <InformationParagraph3>
+                      {artwork.is_public_domain ? 'public' : 'private'}
+                    </InformationParagraph3>
+                    <ButtonContainer>
+                      <Button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          artworkCtx.addArtwork(artwork.id, artworks);
+                        }}
+                        disabled={artworkCtx.artworks.some(
+                          (item) => item.id === artwork.id
+                        )}
+                      >
+                        {artworkCtx.artworks.some(
+                          (item) => item.id === artwork.id
+                        ) ? (
+                          <Image src={RemoveIcon} alt="remove artwork" />
+                        ) : (
+                          <Image src={SelectIcon} alt="select artwork" />
+                        )}
+                      </Button>
+                    </ButtonContainer>
+                  </InformationContainer>
+                </Anchor>
+              </ListItem>
+            );
+          })}
+        </List>
+      )}
       <Pagination
         totalPages={totalPages}
         currentPage={currentPage}
