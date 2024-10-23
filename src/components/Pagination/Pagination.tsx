@@ -45,3 +45,5 @@ export function Pagination({
     </PaginationContainer>
   );
 }
+
+// [...Array(totalPages)]

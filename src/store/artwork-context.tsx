@@ -1,5 +1,11 @@
-import { createContext, ReactNode, useEffect, useMemo, useState } from 'react';
-import { FetchedData } from '../components/Artworks/ArtworkList';
+import React, {
+  createContext,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { FetchedData } from '../components/Artworks/ArtworkListItems';
 
 type ArtworkContextObj = {
   artworks: FetchedData[];
@@ -14,7 +20,7 @@ export const ArtworkContext = createContext<ArtworkContextObj>({
 });
 
 type ArtworkContextProps = {
-  children: ReactNode;
+  children: React.ReactNode;
 };
 
 export const ArtworkContextProvider = ({ children }: ArtworkContextProps) => {

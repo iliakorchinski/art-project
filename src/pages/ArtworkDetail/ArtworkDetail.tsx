@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { FetchedData } from '../../components/Artworks/ArtworkList';
+import { FetchedData } from '../../components/Artworks/ArtworkListItems';
 import { Loader } from '../../components/Loader/Loader';
 import {
   Container,
