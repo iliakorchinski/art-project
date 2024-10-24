@@ -5,7 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { FetchedData } from '../components/Artworks/ArtworkListItems';
+import { FetchedData } from '../components/Artworks/FetchedArtworks';
 
 type ArtworkContextObj = {
   artworks: FetchedData[];

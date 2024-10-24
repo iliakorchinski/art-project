@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { ArtworkListItems, FetchedData } from './ArtworkListItems';
+import { BrowserRouter } from 'react-router-dom';
+import { ArtworkListItems } from './ArtworkListItems';
+import { FetchedData } from './FetchedArtworks';
 import { ArtworkContext } from '../../store/artwork-context';
 
 type ArtworkContextObj = {
@@ -26,14 +28,12 @@ it('render artworks', async () => {
   //   global.fetch = jest.fn(() =>
   //     Promise.resolve({ json: () => Promise.resolve(mockedData) })
   //   ) as jest.Mock;
-  render(
-    <ArtworkContext.Provider value={mockedContextData}>
-      <ArtworkListItems artworks={mockedData} />
-    </ArtworkContext.Provider>
-  );
+  render(<ArtworkListItems artworks={mockedData} />, {
+    wrapper: BrowserRouter,
+  });
   screen.debug();
 
-  const listItemElements = await screen.findByText('test title');
+  const listItemElements = await screen.findByText('Test Artist');
 
   expect(listItemElements).toBeInTheDocument();
 });

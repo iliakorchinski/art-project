@@ -14,14 +14,7 @@ import {
   ButtonContainer,
   Button,
 } from './ArtworkListStyle';
-
-export type FetchedData = {
-  id: string;
-  image_id: string;
-  title: string;
-  artist_title: string;
-  is_public_domain: boolean;
-};
+import { FetchedData } from './FetchedArtworks';
 
 type ArtworkListItemsProps = {
   artworks: FetchedData[];

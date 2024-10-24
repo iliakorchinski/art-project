@@ -3,12 +3,15 @@ import { SearchInput } from '../Search/SearchInput';
 import { Loader } from '../Loader/Loader';
 import { useDebouncedValue } from '../../util/hooks/useDebounce';
 import { Pagination } from '../Pagination/Pagination';
-import { ArtworkListItems, FetchedData } from './ArtworkListItems';
+import { ArtworkListItems } from './ArtworkListItems';
+import { FetchedData } from './FetchedArtworks';
 
 export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<FetchedData[]>([]);
   const [enterredSearch, setEnterredSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [pagesToShow, setPagesToShow] = useState([1, 2, 3, 4]);
+  const [step, setStep] = useState(1);
   const debounceSearchItem = useDebouncedValue(enterredSearch, 500);
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 8;
@@ -38,6 +41,17 @@ export const ArtworkList = () => {
         setIsLoading(false);
       });
     } else {
+      setPagesToShow((prevState) => {
+        if (currentPage > 2) {
+          return [
+            currentPage - 1,
+            currentPage,
+            currentPage + 1,
+            currentPage + 2,
+          ];
+        }
+        return [...prevState];
+      });
       getArtWorks(currentPage, pageSize).then((data) => {
         setArtworks(data.data);
 
@@ -47,17 +61,41 @@ export const ArtworkList = () => {
   }, [debounceSearchItem, currentPage]);
 
   const handleNextPage = () => {
+    if (currentPage === totalPages) {
+      setPagesToShow([
+        currentPage - 3,
+        currentPage - 2,
+        currentPage - 1,
+        currentPage,
+      ]);
+    }
+
     if (currentPage < totalPages) {
       setCurrentPage((prevState) => prevState + 1);
+      setStep((prevStep) => prevStep + 1);
+    }
+    if (currentPage < 2) {
+      setStep(1);
     }
   };
 
   const handlePrevPage = () => {
     if (currentPage > 1) {
       setCurrentPage((prevState) => prevState - 1);
+      setStep((prevStep) => prevStep - 1);
+    }
+    if (currentPage < 2) {
+      setStep(1);
     }
   };
   const handlePageClick = (pageNumber: number) => {
+    if (currentPage > pageNumber) {
+      setStep((prevStep) => prevStep - 1);
+    }
+    if (currentPage < pageNumber) {
+      setStep((prevStep) => prevStep + 1);
+    }
+
     setCurrentPage(pageNumber);
   };
 
@@ -67,6 +105,8 @@ export const ArtworkList = () => {
       {isLoading && <Loader />}
       {!isLoading && <ArtworkListItems artworks={artworks} />}
       <Pagination
+        step={step}
+        pagesToShow={pagesToShow}
         totalPages={totalPages}
         currentPage={currentPage}
         handleNextPage={handleNextPage}
