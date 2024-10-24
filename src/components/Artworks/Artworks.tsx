@@ -50,7 +50,7 @@ export const ArtworkList = () => {
             currentPage + 2,
           ];
         }
-        return [...prevState];
+        return [1, 2, 3, 4];
       });
       getArtWorks(currentPage, pageSize).then((data) => {
         setArtworks(data.data);
@@ -61,14 +61,14 @@ export const ArtworkList = () => {
   }, [debounceSearchItem, currentPage]);
 
   const handleNextPage = () => {
-    if (currentPage === totalPages) {
-      setPagesToShow([
-        currentPage - 3,
-        currentPage - 2,
-        currentPage - 1,
-        currentPage,
-      ]);
-    }
+    // if (currentPage === totalPages) {
+    //   setPagesToShow([
+    //     currentPage - 3,
+    //     currentPage - 2,
+    //     currentPage - 1,
+    //     currentPage,
+    //   ]);
+    // }
 
     if (currentPage < totalPages) {
       setCurrentPage((prevState) => prevState + 1);

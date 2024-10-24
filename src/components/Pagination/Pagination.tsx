@@ -24,9 +24,6 @@ export function Pagination({
   handlePrevPage,
   handlePageClick,
 }: PaginationProps) {
-  console.log('currentPage', currentPage);
-  console.log('step', step);
-  console.log('pagesToShow', pagesToShow);
   return (
     <PaginationContainer>
       <ArrowButton type="button" onClick={handlePrevPage}>
