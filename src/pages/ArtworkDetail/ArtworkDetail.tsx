@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
+import { getArtWork } from '../../api/getSingleArtwork';
 import { Loader } from '../../components/Loader/Loader';
 import { FetchedData } from '../../types/FetchedArtworks';
 import {
@@ -14,19 +15,17 @@ export function ArtworkDetail() {
   const [artwork, setArtwork] = useState<FetchedData>();
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
-  function getArtWorks(): Promise<{ data: FetchedData }> {
-    const responce = fetch(
-      `https://api.artic.edu/api/v1/artworks/${params.id}?fields=id,title,artist_display,date_display,main_reference_number,image_id,artist_title,is_public_domain,dimensions,credit_line,dimensions`
-    ).then((res) => res.json());
-    return responce;
-  }
+
   useEffect(() => {
     setIsLoading(true);
-    getArtWorks().then((data) => {
-      setArtwork(data.data);
-      setIsLoading(false);
-    });
+    if (params.id) {
+      getArtWork(params.id).then((data) => {
+        setArtwork(data.data);
+        setIsLoading(false);
+      });
+    }
   }, []);
+
   return (
     <>
       <h1>ArtworkDetailPage</h1>

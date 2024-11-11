@@ -1,13 +1,10 @@
+import { SearchInputProps } from '../../types/SearchInputProps';
 import { InputContainer } from './SearchInputStyle';
 
-type SearchInputProps = {
-  value: string;
-  onChange: (value: string) => void;
-};
-
-export const SearchInput = ({ value, onChange }: SearchInputProps) => {
+export const SearchInput = ({ value, onChange, color }: SearchInputProps) => {
   return (
     <InputContainer
+      color={color}
       placeholder="search artist or title"
       value={value}
       onChange={(e) => onChange(e.target.value)}

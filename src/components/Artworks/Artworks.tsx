@@ -14,10 +14,11 @@ export const ArtworkList = () => {
   const [enterredSearch, setEnterredSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages: number = 8;
+  const totalPages: number = 9;
   const pageSize = 3;
+  const DELAY = 500;
 
-  const debounceSearchItem = useDebouncedValue(enterredSearch, 500);
+  const debounceSearchItem = useDebouncedValue(enterredSearch, DELAY);
 
   useEffect(() => {
     setIsLoading(true);
@@ -57,9 +58,16 @@ export const ArtworkList = () => {
 
   return (
     <>
-      <SearchInput value={enterredSearch} onChange={setEnterredSearch} />
+      <SearchInput
+        value={enterredSearch}
+        onChange={setEnterredSearch}
+        color={debounceSearchItem !== '' && artworks.length === 0 ? 'red' : ''}
+      />
       {isLoading && <Loader />}
       {!isLoading && <ArtworkListItems artworks={artworks} />}
+      {debounceSearchItem !== '' && artworks.length === 0 && (
+        <p>Could not find any artworks...</p>
+      )}
       <Pagination
         pagesToShow={pagesToShow}
         totalPages={totalPages}
