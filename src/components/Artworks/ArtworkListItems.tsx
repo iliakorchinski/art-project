@@ -1,24 +1,22 @@
 import { useContext } from 'react';
-import { ArtworkContext } from '../../store/artwork-context';
+
 import RemoveIcon from '../../assets/RemoveIcon.jpg';
 import SelectIcon from '../../assets/SelectIcon.jpg';
+import { ArtworkContext } from '../../store/artwork-context';
+import { ArtworkListItemsProps } from '../../types/ArtworksListItemsProps';
 import {
-  List,
-  ListItem,
   Anchor,
+  Button,
+  ButtonContainer,
   Image,
   InformationContainer,
   InformationParagraph1,
   InformationParagraph2,
   InformationParagraph3,
-  ButtonContainer,
-  Button,
+  List,
+  ListItem,
 } from './ArtworkListStyle';
-import { FetchedData } from './FetchedArtworks';
 
-type ArtworkListItemsProps = {
-  artworks: FetchedData[];
-};
 export const ArtworkListItems = ({ artworks }: ArtworkListItemsProps) => {
   const artworkCtx = useContext(ArtworkContext);
 

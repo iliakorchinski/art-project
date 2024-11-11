@@ -1,13 +1,14 @@
 import { useContext } from 'react';
+
+import RemoveIcon from '../../assets/RemoveIcon.jpg';
 import { ArtworkContext } from '../../store/artwork-context';
 import {
-  Container,
-  Item,
-  ButtonContainer,
   Button,
+  ButtonContainer,
+  Container,
   Image,
+  Item,
 } from './FavouritesStyle';
-import RemoveIcon from '../../assets/RemoveIcon.jpg';
 
 export function Favourites() {
   const artworkCtx = useContext(ArtworkContext);

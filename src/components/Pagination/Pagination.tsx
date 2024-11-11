@@ -1,22 +1,12 @@
+import { PaginationProps } from '../../types/PaginationProps';
 import {
-  PaginationContainer,
-  ButtonContainer,
   ArrowButton,
   Button,
+  ButtonContainer,
+  PaginationContainer,
 } from './PaginationStyle';
 
-type PaginationProps = {
-  step: number;
-  pagesToShow: number[];
-  totalPages: number;
-  currentPage: number;
-  handleNextPage: () => void;
-  handlePrevPage: () => void;
-  handlePageClick: (pageNumber: number) => void;
-};
-
 export function Pagination({
-  step,
   pagesToShow,
   totalPages,
   currentPage,
@@ -24,29 +14,32 @@ export function Pagination({
   handlePrevPage,
   handlePageClick,
 }: PaginationProps) {
-  console.log('STEP:', step);
-  console.log('PAGES TO SHOW:', pagesToShow);
-  console.log('CURRENTPAGE:', currentPage);
   return (
     <PaginationContainer>
-      <ArrowButton type="button" onClick={handlePrevPage}>
+      <ArrowButton
+        type="button"
+        onClick={handlePrevPage}
+        disabled={currentPage === 1}
+      >
         {'<'}
       </ArrowButton>
       <ButtonContainer>
-        {pagesToShow.map((page, i) => {
-          return (
-            <Button
-              key={`${i + 1}`}
-              type="button"
-              onClick={() => handlePageClick(i + step)}
-              disabled={i + step === currentPage}
-            >
-              {i + step}
-            </Button>
-          );
-        })}
+        {pagesToShow.map((page) => (
+          <Button
+            key={page}
+            type="button"
+            onClick={() => handlePageClick(page)}
+            disabled={page === currentPage}
+          >
+            {page}
+          </Button>
+        ))}
       </ButtonContainer>
-      <ArrowButton type="button" onClick={handleNextPage}>
+      <ArrowButton
+        type="button"
+        onClick={handleNextPage}
+        disabled={currentPage === totalPages}
+      >
         {'>'}
       </ArrowButton>
     </PaginationContainer>

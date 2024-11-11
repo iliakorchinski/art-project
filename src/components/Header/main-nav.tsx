@@ -1,4 +1,4 @@
-import { Header, Container, LinkContainer, Anchor } from './MainNavStyle';
+import { Anchor,Container, Header, LinkContainer } from './MainNavStyle';
 
 export function MainNav() {
   return (

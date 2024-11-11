@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import { ArtworkListItems } from './ArtworkListItems';
-import { FetchedData } from './FetchedArtworks';
+
 import { ArtworkContext } from '../../store/artwork-context';
+import { FetchedData } from '../../types/FetchedArtworks';
+import { ArtworkListItems } from './ArtworkListItems';
 
 type ArtworkContextObj = {
   artworks: FetchedData[];
@@ -23,6 +24,9 @@ it('render artworks', async () => {
       is_public_domain: false,
       artist_title: 'Test Artist',
       image_id: '615d6e9d-dfcf-0e52-c991-cd45f6b581c6',
+      credit_line: 32,
+      date_display: 2001,
+      dimensions: 12,
     },
   ];
   //   global.fetch = jest.fn(() =>

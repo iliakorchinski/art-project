@@ -1,9 +1,10 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
 import { Navigation } from './components/Navigation';
-import { HomePage } from './pages/Home';
-import { Favourites } from './pages/Favourites/Favourites';
-import { ArtworkContextProvider } from './store/artwork-context';
 import { ArtworkDetail } from './pages/ArtworkDetail/ArtworkDetail';
+import { Favourites } from './pages/Favourites/Favourites';
+import { HomePage } from './pages/Home';
+import { ArtworkContextProvider } from './store/artwork-context';
 
 function App() {
   const router = createBrowserRouter([

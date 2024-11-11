@@ -1,27 +1,16 @@
-import React, {
-  createContext,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
-import { FetchedData } from '../components/Artworks/FetchedArtworks';
+import { createContext, useEffect, useMemo, useState } from 'react';
 
-type ArtworkContextObj = {
-  artworks: FetchedData[];
-  addArtwork: (id: string, artworks: FetchedData[]) => void;
-  removeArtwork: (id: string, artworks: FetchedData[]) => void;
-};
+import {
+  ArtworkContextObj,
+  ArtworkContextProps,
+} from '../types/ArtworkContext';
+import { FetchedData } from '../types/FetchedArtworks';
 
 export const ArtworkContext = createContext<ArtworkContextObj>({
   artworks: [],
   addArtwork: (id: string, artworks: FetchedData[]) => {},
   removeArtwork: (id: string, artworks: FetchedData[]) => {},
 });
-
-type ArtworkContextProps = {
-  children: React.ReactNode;
-};
 
 export const ArtworkContextProvider = ({ children }: ArtworkContextProps) => {
   const artworksLS = localStorage.getItem('artworks');
@@ -36,7 +25,7 @@ export const ArtworkContextProvider = ({ children }: ArtworkContextProps) => {
   const handleSaveArtwork = (id: string, arts: FetchedData[]) => {
     const selectedArtwork: FetchedData | undefined = arts.find(
       (artwork) => artwork.id === id
-    ); // any type
+    );
     console.log(selectedArtwork);
     if (selectedArtwork) {
       setArtworks((prevState) => {

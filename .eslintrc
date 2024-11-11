@@ -8,8 +8,14 @@
       }
     }
   ],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "simple-import-sort"],
+
   "rules": {
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
     "no-console": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": "off",
@@ -38,6 +44,8 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "sourceType": "module",
+    "ecmaVersion": "latest"
   }
 }

@@ -1,16 +1,17 @@
-import { useParams } from 'react-router';
 import { useEffect, useState } from 'react';
-import { FetchedData } from '../../components/Artworks/FetchedArtworks';
+import { useParams } from 'react-router';
+
 import { Loader } from '../../components/Loader/Loader';
+import { FetchedData } from '../../types/FetchedArtworks';
 import {
   Container,
-  ImageContainer,
   Image,
+  ImageContainer,
   InfoContainer,
 } from './ArtworkDetailStyle';
 
 export function ArtworkDetail() {
-  const [artwork, setArtwork] = useState<any>();
+  const [artwork, setArtwork] = useState<FetchedData>();
   const [isLoading, setIsLoading] = useState(false);
   const params = useParams();
   function getArtWorks(): Promise<{ data: FetchedData }> {

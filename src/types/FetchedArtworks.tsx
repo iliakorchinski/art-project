@@ -4,4 +4,7 @@ export type FetchedData = {
   title: string;
   artist_title: string;
   is_public_domain: boolean;
+  credit_line: number;
+  date_display: number;
+  dimensions: number;
 };
