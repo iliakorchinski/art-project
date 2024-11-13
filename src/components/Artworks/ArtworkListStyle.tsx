@@ -7,11 +7,22 @@ export const List = styled.ul`
   flex-direction: row;
   column-gap: 60px;
   list-style-type: none;
+
+  @media (max-width: 420px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export const ListItem = styled.li`
   width: 33%;
   height: 500px;
+
+  @media (max-width: 420px) {
+    width: 90%;
+    height: 300px;
+    margin-bottom: 20px;
+  }
 `;
 
 export const Anchor = styled(Link)`
@@ -35,6 +46,14 @@ export const InformationContainer = styled.div`
   height: 132px;
   background-color: white;
   border: 1px solid #f0f1f1;
+
+  @media (max-width: 420px) {
+    position: absolute;
+    top: 160px;
+    left: 20px;
+    width: 80%;
+    height: 132px;
+  }
 `;
 
 export const InformationParagraph1 = styled.p`

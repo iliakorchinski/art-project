@@ -11,4 +11,8 @@ export const InputContainer = styled.input`
   width: 30%;
   height: 40px;
   text-indent: 20px;
+
+  @media (max-width: 420px) {
+    width: 60%;
+  }
 `;
