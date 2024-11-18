@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { getArtWorks } from '../../api/getArtworks';
 import { searchArtwork } from '../../api/searchArtwork';
@@ -7,10 +7,13 @@ import { useDebouncedValue } from '../../util/hooks/useDebounce';
 import { Loader } from '../Loader/Loader';
 import { Pagination } from '../Pagination/Pagination';
 import { SearchInput } from '../Search/SearchInput';
+import { Sort } from '../Sort/Sort';
 import { ArtworkListItems } from './ArtworkListItems';
 
 export const ArtworkList = () => {
   const [artworks, setArtworks] = useState<FetchedData[]>([]);
+  const [sortedArtworks, setSortedArtworks] = useState<FetchedData[]>([]);
+  const [sortOption, setSortOption] = useState<string>('');
   const [enterredSearch, setEnterredSearch] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,20 +23,40 @@ export const ArtworkList = () => {
 
   const debounceSearchItem = useDebouncedValue(enterredSearch, DELAY);
 
+  const updateFunction = (data: FetchedData[]) => {
+    setSortOption('');
+    setSortedArtworks([]);
+    setArtworks(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
     setIsLoading(true);
     if (debounceSearchItem) {
       searchArtwork(debounceSearchItem).then((data) => {
-        setArtworks(data.data);
-        setIsLoading(false);
+        updateFunction(data.data);
       });
     } else {
       getArtWorks(currentPage, pageSize).then((data) => {
-        setArtworks(data.data);
-        setIsLoading(false);
+        updateFunction(data.data);
       });
     }
   }, [debounceSearchItem, currentPage]);
+
+  const sortData = (option: string) => {
+    let sortedArray: FetchedData[];
+    if (artworks && option === 'date') {
+      sortedArray = [...artworks];
+      sortedArray.sort((a, b) => a.date_end - b.date_end);
+      setSortedArtworks(sortedArray);
+    }
+  };
+
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const selectedOption = event.target.value;
+    setSortOption(selectedOption);
+    sortData(selectedOption);
+  };
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -63,8 +86,13 @@ export const ArtworkList = () => {
         onChange={setEnterredSearch}
         color={debounceSearchItem !== '' && artworks.length === 0 ? 'red' : ''}
       />
+      <Sort handleSortChange={handleSortChange} sortOption={sortOption} />
       {isLoading && <Loader />}
-      {!isLoading && <ArtworkListItems artworks={artworks} />}
+      {!isLoading && (
+        <ArtworkListItems
+          artworks={sortedArtworks.length > 0 ? sortedArtworks : artworks}
+        />
+      )}
       {debounceSearchItem !== '' && artworks.length === 0 && (
         <p>Could not find any artworks...</p>
       )}
