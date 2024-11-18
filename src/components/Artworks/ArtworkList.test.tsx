@@ -27,6 +27,7 @@ it('render artworks', async () => {
       credit_line: 32,
       date_display: 2001,
       dimensions: 12,
+      date_end: 2001,
     },
   ];
   //   global.fetch = jest.fn(() =>
